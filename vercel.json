@@ -9,8 +9,5 @@
     "enabled": true,
     "autoJobCancelation": true,
     "silent": false
-  },
-  "env": {
-    "DOUBAO_API_KEY": "@doubao_api_key"
   }
 }
