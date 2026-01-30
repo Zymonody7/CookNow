@@ -389,7 +389,9 @@ export default function HomePage() {
             />
             {showLogoTooltip && (
               <div className='absolute top-1/2 -translate-y-1/2 right-full mr-2 bg-white text-cny-red px-3 py-2 rounded-lg shadow-2xl whitespace-nowrap z-[100]'>
-                <div className='text-xs font-medium'>别戳我了，马上开饭啦～</div>
+                <div className='text-xs font-medium'>
+                  别戳我了，马上开饭啦～
+                </div>
                 <div className='absolute top-1/2 -translate-y-1/2 -right-1.5 w-0 h-0 border-t-[6px] border-b-[6px] border-l-[6px] border-transparent border-l-white'></div>
               </div>
             )}
