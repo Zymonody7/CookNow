@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #FFF0E6;
+  background-image: url("https://www.transparenttextures.com/patterns/chinese-new-year.png");
+  background-attachment: fixed; /* Parallax-like feel */
+  font-family: 'Noto Serif SC', serif;
+}
+
+/* Hide scrollbar for clean UI */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
