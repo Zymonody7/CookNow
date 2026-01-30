@@ -40,6 +40,7 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'home' | 'favorites' | 'shopping'>(
     'home'
   )
+  const [showLogoTooltip, setShowLogoTooltip] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     cuisine: [],
     taste: [],
@@ -86,7 +87,7 @@ export default function HomePage() {
     setRecipes([])
     try {
       const ingredientNames = ingredients.map(
-        (i) => i.name + (i.quantity ? '(' + i.quantity + ')' : '')
+        (i: Ingredient) => i.name + (i.quantity ? '(' + i.quantity + ')' : '')
       )
 
       // Call Next.js API endpoint instead of direct service
@@ -125,11 +126,15 @@ export default function HomePage() {
     e.stopPropagation()
     const isFav = favorites.includes(recipe.id)
     if (isFav) {
-      setFavorites((prev) => prev.filter((id) => id !== recipe.id))
-      setSavedRecipes((prev) => prev.filter((r) => r.id !== recipe.id))
+      setFavorites((prev: string[]) =>
+        prev.filter((id: string) => id !== recipe.id)
+      )
+      setSavedRecipes((prev: Recipe[]) =>
+        prev.filter((r: Recipe) => r.id !== recipe.id)
+      )
     } else {
-      setFavorites((prev) => [...prev, recipe.id])
-      setSavedRecipes((prev) => [...prev, recipe])
+      setFavorites((prev: string[]) => [...prev, recipe.id])
+      setSavedRecipes((prev: Recipe[]) => [...prev, recipe])
     }
   }
 
@@ -142,22 +147,22 @@ export default function HomePage() {
       checked: false,
       recipeName: recipeName
     }))
-    setShoppingList((prev) => [...prev, ...newItems])
+    setShoppingList((prev: ShoppingItem[]) => [...prev, ...newItems])
     // Optional: Switch to shopping tab to show user
     // setActiveTab('shopping');
     setSelectedRecipe(null)
   }
 
   const toggleShoppingItem = (id: string) => {
-    setShoppingList((prev) =>
-      prev.map((item) =>
+    setShoppingList((prev: ShoppingItem[]) =>
+      prev.map((item: ShoppingItem) =>
         item.id === id ? { ...item, checked: !item.checked } : item
       )
     )
   }
 
   const clearShoppingList = () =>
-    setShoppingList((prev) => prev.filter((i) => !i.checked))
+    setShoppingList((prev: ShoppingItem[]) => prev.filter((i) => !i.checked))
 
   const saveCurrentCombo = () => {
     const name = prompt(
@@ -175,10 +180,40 @@ export default function HomePage() {
     setSavedCombos(newCombos)
   }
 
+  const handleLogoClick = () => {
+    console.log('Logo clicked! showLogoTooltip:', showLogoTooltip)
+    setShowLogoTooltip(true)
+    setTimeout(() => setShowLogoTooltip(false), 2000)
+  }
+
+  const handleToggleFavorite = (recipe: Recipe, e: React.MouseEvent) => {
+    e.stopPropagation()
+    const isFav = favorites.includes(recipe.id)
+    if (isFav) {
+      setFavorites((prev: string[]) =>
+        prev.filter((id: string) => id !== recipe.id)
+      )
+      setSavedRecipes((prev: Recipe[]) =>
+        prev.filter((r: Recipe) => r.id !== recipe.id)
+      )
+    } else {
+      setFavorites((prev: string[]) => [...prev, recipe.id])
+      setSavedRecipes((prev: Recipe[]) => [...prev, recipe])
+    }
+  }
+
+  const handleLoadCombo = (combo: any) => {
+    setIngredients(combo)
+  }
+
+  const handleShoppingListToggle = (item: { id: string; checked: boolean }) => {
+    setShoppingList((prev: ShoppingItem[]) => prev.filter((i) => !i.checked))
+  }
+
   // --- Views ---
 
   const renderHome = () => (
-    <div className='pb-24 animate-in fade-in duration-500'>
+    <div className='pb-24 opacity-100 transition-opacity duration-500'>
       {/* Ingredient Section */}
       <section className='mb-8'>
         <IngredientInput
@@ -186,7 +221,7 @@ export default function HomePage() {
           setIngredients={setIngredients}
           onSaveCombo={saveCurrentCombo}
           savedCombos={savedCombos}
-          onLoadCombo={(combo) => setIngredients(combo)}
+          onLoadCombo={handleLoadCombo}
           onDeleteCombo={deleteCombo}
         />
       </section>
@@ -279,7 +314,7 @@ export default function HomePage() {
                 recipe={recipe}
                 onClick={() => setSelectedRecipe(recipe)}
                 isFavorite={favorites.includes(recipe.id)}
-                onToggleFavorite={(e) => toggleFavorite(recipe, e)}
+                onToggleFavorite={(e) => handleToggleFavorite(recipe, e)}
               />
             ))}
           </div>
@@ -300,7 +335,7 @@ export default function HomePage() {
   )
 
   const renderFavorites = () => (
-    <div className='pb-24 animate-in slide-in-from-right duration-300'>
+    <div className='pb-24 opacity-100 transition-all duration-300'>
       <div className='bg-white p-6 rounded-2xl shadow-sm mb-6 border border-gray-100'>
         <h2 className='text-2xl font-bold text-cny-darkRed font-serif'>
           我的收藏夹
@@ -321,7 +356,7 @@ export default function HomePage() {
               recipe={recipe}
               onClick={() => setSelectedRecipe(recipe)}
               isFavorite={favorites.includes(recipe.id)}
-              onToggleFavorite={(e) => toggleFavorite(recipe, e)}
+              onToggleFavorite={(e) => handleToggleFavorite(recipe, e)}
             />
           ))}
         </div>
@@ -343,8 +378,21 @@ export default function HomePage() {
               马年团圆 · 智能烹饪
             </p>
           </div>
-          <div className='w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 overflow-hidden'>
-            <img src='/logo.png' alt='马上开饭' className='w-8 h-8 object-contain' />
+          <div
+            className='w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 cursor-pointer hover:scale-110 active:scale-95 transition-transform relative'
+            onClick={handleLogoClick}
+          >
+            <img
+              src='/logo.png'
+              alt='马上开饭'
+              className='w-8 h-8 object-contain pointer-events-none'
+            />
+            {showLogoTooltip && (
+              <div className='absolute top-1/2 -translate-y-1/2 right-full mr-2 bg-white text-cny-red px-3 py-2 rounded-lg shadow-2xl whitespace-nowrap z-[100]'>
+                <div className='text-xs font-medium'>别戳我了，马上开饭啦～</div>
+                <div className='absolute top-1/2 -translate-y-1/2 -right-1.5 w-0 h-0 border-t-[6px] border-b-[6px] border-l-[6px] border-transparent border-l-white'></div>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -374,37 +422,27 @@ export default function HomePage() {
             />
             <span className='text-[10px] font-bold'>首页</span>
           </button>
-
-          <button
-            onClick={() => setActiveTab('shopping')}
-            className={`flex flex-col items-center justify-center w-full h-full transition-colors ${activeTab === 'shopping' ? 'text-cny-red' : 'text-gray-400'}`}
-          >
-            <div className='relative'>
-              <ListChecks
-                className={`w-6 h-6 mb-1 ${activeTab === 'shopping' ? 'fill-cny-red/10' : ''}`}
-              />
-              {shoppingList.filter((i) => !i.checked).length > 0 && (
-                <span className='absolute -top-1 -right-2 w-4 h-4 bg-cny-gold text-white text-[9px] rounded-full flex items-center justify-center shadow-sm'>
-                  {shoppingList.filter((i) => !i.checked).length}
-                </span>
-              )}
-            </div>
-            <span className='text-[10px] font-bold'>清单</span>
-          </button>
-
           <button
             onClick={() => setActiveTab('favorites')}
             className={`flex flex-col items-center justify-center w-full h-full transition-colors ${activeTab === 'favorites' ? 'text-cny-red' : 'text-gray-400'}`}
           >
             <Heart
-              className={`w-6 h-6 mb-1 ${activeTab === 'favorites' ? 'fill-cny-red' : ''}`}
+              className={`w-6 h-6 mb-1 ${activeTab === 'favorites' ? 'fill-cny-red/10' : ''}`}
             />
             <span className='text-[10px] font-bold'>收藏</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('shopping')}
+            className={`flex flex-col items-center justify-center w-full h-full transition-colors ${activeTab === 'shopping' ? 'text-cny-red' : 'text-gray-400'}`}
+          >
+            <ListChecks
+              className={`w-6 h-6 mb-1 ${activeTab === 'shopping' ? 'fill-cny-red/10' : ''}`}
+            />
+            <span className='text-[10px] font-bold'>清单</span>
           </button>
         </div>
       </nav>
 
-      {/* Modals */}
       <RecipeModal
         recipe={selectedRecipe}
         onClose={() => setSelectedRecipe(null)}

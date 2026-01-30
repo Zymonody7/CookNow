@@ -17,7 +17,7 @@ async function callDoubaoAPI(
   }
 
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+  const timeoutId = setTimeout(() => controller.abort(), 1200000) // 1200 second timeout
 
   try {
     const response = await fetch(DOUBAO_API_ENDPOINT, {
@@ -46,7 +46,9 @@ async function callDoubaoAPI(
   } catch (error: any) {
     clearTimeout(timeoutId)
     if (error.name === 'AbortError') {
-      throw new Error('Request timeout: Unable to connect to Doubao API. Please check your network connection.')
+      throw new Error(
+        'Request timeout: Unable to connect to Doubao API. Please check your network connection.'
+      )
     }
     throw error
   }
