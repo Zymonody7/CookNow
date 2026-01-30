@@ -1,13 +1,12 @@
-
 # 马上开饭 项目介绍
 
 ## 项目名称及简介
 
-**马上开饭 - AI驱动的智能菜谱生成平台**
+**马上开饭 - CookNow**
 
 马上开饭是一个创新的智能烹饪助手平台，利用先进的 AI 技术帮助用户根据现有食材快速生成美味菜谱。通过豆包 AI 的深度学习能力，马上开饭不仅能够智能匹配食材组合，还能根据用户的口味偏好、烹饪难度和时间限制，生成个性化的菜谱方案，让每一次烹饪都充满创意和惊喜。
 
-[项目仓库](https://github.com/Zymonody7/CookNow "项目仓库")|[项目地址](https://cook-now-gilt.vercel.app/)
+[项目仓库](https://github.com/Zymonody7/CookNow "项目仓库")|[项目地址](https://cook-now-lovat.vercel.app/home)
 
 ---
 
