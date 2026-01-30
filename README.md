@@ -39,7 +39,7 @@
 
 **页面效果：**
 
-![食材输入界面](image/README/ingredient-input.png)
+![1769761577137](image/README/1769761577137.png)
 
 ---
 
@@ -53,7 +53,6 @@
 
 **页面效果：**
 
-![菜谱生成](image/README/recipe-generation.png)
 
 ---
 
@@ -61,14 +60,11 @@
 
 **功能描述：**
 
-- 按菜系筛选（川菜、湘菜等）
-- 按口味筛选（麻辣、清淡、酸甜等）
 - 按时间和难度筛选
 - 自定义生成菜谱数量
 
 **页面效果：**
 
-![筛选功能](image/README/filters.png)
 
 ---
 
@@ -83,7 +79,7 @@
 
 **页面效果：**
 
-![菜谱详情](image/README/recipe-detail.png)
+![1769761615692](https://file+.vscode-resource.vscode-cdn.net/Users/a0000/projects/vbcoding/CookNow/image/README/1769761615692.png)
 
 ---
 
@@ -98,7 +94,7 @@
 
 **页面效果：**
 
-![收藏和购物清单](image/README/favorites-shopping.png)
+![1769761686055](image/README/1769761686055.png)
 
 ---
 
